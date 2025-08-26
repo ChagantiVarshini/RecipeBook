@@ -20,14 +20,33 @@ def allowed_file(filename):
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # MySQL connection
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="root",           
+#     password="Munny1@@@",  
+#     database="recipes"
+# )
+# if not mydb.is_connected():
+#     mydb.reconnect()
+
+from urllib.parse import urlparse
+
+# Get the DATABASE_URL from environment
+db_url = os.environ.get("railway")
+if db_url is None:
+    raise Exception("DATABASE_URL not found in environment variables")
+
+# Parse the URL
+url = urlparse(db_url)
+
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",           # change to your MySQL username
-    password="Munny1@@@",  # change to your MySQL password
-    database="recipes"
+    host=url.hostname,
+    port=url.port,
+    user=url.username,
+    password=url.password,
+    database=url.path[1:]  # remove leading '/'
 )
-if not mydb.is_connected():
-    mydb.reconnect()
+
 
 @app.route("/")
 def index():
