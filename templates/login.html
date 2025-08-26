@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Recipes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+</head>
+<body>
+    <header>🍲 Recipes App</header>
+
+    <main>
+        <div class="form-container">
+            <!-- Flash Messages INSIDE the form container -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Login Form -->
+            <form method="POST">
+                <h2>Login</h2>
+
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Enter username" required>
+
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" required>
+
+                <button type="submit">Login</button>
+
+                <p class="register-link">
+                    Don’t have an account? <a href="{{ url_for('register') }}">Register</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <footer>&copy; 2025 Recipes App</footer>
+</body>
+</html>

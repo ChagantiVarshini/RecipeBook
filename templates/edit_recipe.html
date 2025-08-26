@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Recipe - Recipes App</title>
+   <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(rgba(255, 248, 240, 0.92), rgba(255, 248, 240, 0.92)),
+        url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #e67e22, #f39c12);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .navbar .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #2c3e50;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* Form container */
+    .form-container {
+      max-width: 650px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 35px;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #d35400;
+    }
+
+    /* Flash messages */
+    .flash-message {
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .flash-message.success {
+      background-color: #27ae60;
+      color: #fff;
+    }
+
+    .flash-message.error {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+
+    /* Form elements */
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: #e67e22;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Button */
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #e67e22, #f39c12);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .navbar ul {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        display: none;
+      }
+
+      .navbar ul.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="{{ url_for('browse') }}" class="logo">🍴 Recipes App</a>
+    <div class="hamburger" onclick="toggleMenu(this)">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul id="nav-links">
+      <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('browse') }}">Browse</a></li>
+      <li><a href="{{ url_for('add_recipe') }}">Add Recipe</a></li>
+      <li><a href="{{ url_for('my_recipe') }}">My Recipes</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="form-container">
+    <h1>Edit Recipe</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash-message {{ category }}">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
+      <label for="title">Recipe Title</label>
+      <input type="text" id="title" name="title" value="{{ recipe.title }}" required />
+
+      <label for="ingredients">Ingredients</label>
+      <textarea id="ingredients" name="ingredients" required>{{ recipe.ingredients }}</textarea>
+
+      <label for="instructions">Instructions</label>
+      <textarea id="instructions" name="instructions" required>{{ recipe.instructions }}</textarea>
+
+      <label for="image">Change Image (optional)</label>
+      <input type="file" id="image" name="image" accept="image/*" />
+
+      <button type="submit">Update Recipe</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleMenu(hamburger) {
+      hamburger.classList.toggle("active");
+      document.getElementById("nav-links").classList.toggle("active");
+    }
+  </script>
+
+</body>
+
+</html>

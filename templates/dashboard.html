@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard - Recipes App{% endblock %}</title>
+   <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      
+       background: linear-gradient(rgba(255, 245, 230, 0.85), rgba(255, 245, 230, 0.85)),
+        no-repeat fixed;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 140, 0, 0.95);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+      align-items: center;
+    }
+
+    nav ul li a {
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffd699;
+    }
+
+    nav ul li form button {
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      font-family: inherit;
+    }
+
+    nav ul li form button:hover {
+      color: #b74100;
+      text-decoration: underline;
+    }
+
+    .user-info {
+      background: #ff6b00;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 60vh;
+      background: url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80")
+        center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+      margin-top: 60px;
+      position: relative;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #ffe5cc;
+    }
+
+    /* Recipe Cards Grid - single row */
+    section.content {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+      overflow-x: auto;
+    }
+
+    .card {
+      flex: 0 0 23%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-content h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #ff6b00;
+    }
+
+    .card-content p {
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+    /* === Responsive Adjustments === */
+
+/* Hamburger icon - hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 3px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  nav ul {
+    display: none; /* hide links initially */
+    flex-direction: column;
+    width: 100%;
+    background: rgba(255,140,0,0.95);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    padding: 15px 0;
+    gap: 10px;
+  }
+
+  nav ul li {
+    text-align: center;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  nav ul.show {
+    display: flex;
+  }
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h2>🍲 Recipes</h2>
+ <div class="hamburger">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+    <ul id="nav-links">
+      <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('add_recipe') }}">Add Recipe</a></li>
+      <li><a href="{{ url_for('browse') }}">Browse</a></li>
+      <li><a href="{{ url_for('my_recipe') }}">My Recipes</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      <li>
+        <form method="POST" action="{{ url_for('delete_account') }}"
+          onsubmit="return confirm('Are you sure you want to delete your account?');">
+          <button type="submit">Delete Account</button>
+        </form>
+      </li>
+    </ul>
+    <div class="user-info">{{ user_data.username }}</div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Your Recipe World 🌎</h1>
+      <p>Find inspiration, save your favorites, and share your own recipes</p>
+    </div>
+  </section>
+
+  <!-- Recipe Categories -->
+  <section class="content">
+    <div class="card">
+      <a href="{{ url_for('category_view', category_name='breakfast') }}">
+        <img src="https://images.unsplash.com/photo-1495195134817-aeb325a55b65?auto=format&fit=crop&w=800&q=80"
+          alt="Breakfast">
+        <div class="card-content">
+          <h3>🥞 Breakfast</h3>
+          <p>Start your day with healthy and delicious breakfast ideas.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="{{ url_for('category_view', category_name='lunch') }}">
+        <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80" alt="Lunch" />
+        <div class="card-content">
+          <h3>🍛 Lunch</h3>
+          <p>Quick and filling recipes perfect for mid-day meals.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="{{ url_for('category_view', category_name='dinner') }}">
+        <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80" alt="Dinner">
+        <div class="card-content">
+          <h3>🍽 Dinner</h3>
+          <p>Wholesome dinners that bring family and friends together.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="{{ url_for('category_view', category_name='dessert') }}">
+        <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=800&q=80"
+          alt="Desserts">
+        <div class="card-content">
+          <h3>🍰 Desserts</h3>
+          <p>Sweet treats to satisfy every craving.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const hamburger = document.querySelector(".hamburger");
+  const navLinks = document.getElementById("nav-links");
+
+  // Only proceed if both elements exist
+  if(hamburger && navLinks){
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+  }
+});
+</script>
+
+
+</body>
+
+</html>

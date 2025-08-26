@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ category }} Recipes</title>
+   <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(rgba(255, 245, 230, 0.85), rgba(255, 245, 230, 0.85)),
+        url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1920&q=80") no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    nav {
+      background: rgba(255, 140, 0, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffe066;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+    }
+
+    /* Page Title */
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #e67e22;
+    }
+
+    /* Recipes Grid */
+    .recipes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* Recipe Card */
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1.2rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-content h3 {
+      margin-bottom: 0.5rem;
+      color: #e67e22;
+      font-size: 1.3rem;
+    }
+
+    .card-content p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .view-btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      background: #ff8c00;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .view-btn:hover {
+      background: #e67e22;
+      transform: scale(1.05);
+    }
+
+    /* Empty State */
+    .empty {
+      text-align: center;
+      margin: 3rem 0;
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive Navbar */
+    @media(max-width:768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: rgba(255, 140, 0, 0.95);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        padding: 10px 0;
+        padding-left: 7%;
+        gap: 10px;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    @media(max-width:600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h2>Recipes App</h2>
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="{{ url_for('dashboard') }}">Home</a>
+      <a href="{{ url_for('browse') }}">Browse</a>
+      <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+      <a href="{{ url_for('my_recipe') }}">My Recipes</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Page Title -->
+  <header>
+    <h1>{{ category }} Recipes</h1>
+  </header>
+
+  <!-- Recipes Grid -->
+  <div class="recipes-container">
+    {% if recipes %}
+    {% for recipe in recipes %}
+    <div class="card">
+      {% if recipe.image %}
+      <img src="{{ url_for('static', filename='uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}">
+      {% endif %}
+      <div class="card-content">
+        <h3>{{ recipe.title }}</h3>
+        <p>by {{ recipe.username }}</p>
+        <a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}" class="view-btn">View Recipe →</a>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="empty">No recipes found in this category.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const hamburger = document.querySelector(".hamburger");
+      const navLinks = document.getElementById("nav-links");
+      if (hamburger && navLinks) {
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("show");
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

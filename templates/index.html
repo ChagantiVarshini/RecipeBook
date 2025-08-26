@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+</head>
+<body>
+    <header>
+        <h1>🍲 Recipes App</h1>
+    </header>
+
+    <main style="text-align:center; margin-top:50px;">
+        <h2>Welcome to Recipes App</h2>
+        <p>Please login or register to continue.</p>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('register') }}" class="btn">Register</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Recipes App. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

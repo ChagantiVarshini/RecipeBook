@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Recipe - Recipes App</title>
+   <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2729/2729063.png" type="image/png">
+
+  <style>
+    /* === Global Styles === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat fixed;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* === Navbar === */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 140, 0, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    .navbar ul li a,
+    .navbar ul li form button {
+      text-decoration: none;
+      font-weight: 600;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: 0.3s ease;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .navbar ul li a:hover,
+    .navbar ul li form button:hover {
+      background: #ff6b00;
+      color: #fff;
+    }
+
+    /* Danger button for Delete Account */
+    .navbar ul li form button {
+      color: #ffd6c2;
+    }
+
+    .navbar ul li form button:hover {
+      background: #d84315;
+      color: #fff;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+    }
+
+    /* === Form Container === */
+    .container {
+      max-width: 700px;
+      margin: 100px auto 50px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6b00;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #ff6b00;
+      outline: none;
+    }
+
+    button.submit-btn {
+      background: #ff6b00;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+
+    button.submit-btn:hover {
+      background: #e65a00;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        background: rgba(255, 140, 0, 0.95);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        padding: 10px 0;
+        margin-top: -1.5%;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .navbar ul.show {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- === Navbar === -->
+  <nav class="navbar">
+    <div class="logo">🍲 RecipesApp</div>
+
+    <!-- Hamburger -->
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <ul id="nav-links">
+      <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('add_recipe') }}">Add Recipe</a></li>
+      <li><a href="{{ url_for('browse') }}">Browse</a></li>
+      <li><a href="{{ url_for('my_recipe') }}">My Recipes</a></li>
+      <li>
+        <form method="POST" action="{{ url_for('delete_account') }}"
+          onsubmit="return confirm('Are you sure you want to delete your account?');">
+          <button type="submit">Delete Account</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- === Add Recipe Form === -->
+  <div class="container">
+    <h1>Add Your Recipe</h1>
+    <form method="POST" action="{{ url_for('add_recipe') }}" enctype="multipart/form-data">
+
+      <label for="title">Recipe Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter recipe title" required />
+
+      <label for="category">Category</label>
+      <select id="category" name="category" required>
+        <option value="" disabled selected>-- Select Category --</option>
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <option value="Dessert">Dessert</option>
+      </select>
+
+      <label for="ingredients">Ingredients</label>
+      <textarea id="ingredients" name="ingredients" placeholder="List ingredients, separated by commas"
+        required></textarea>
+
+      <label for="instructions">Instructions</label>
+      <textarea id="instructions" name="instructions" placeholder="Describe preparation steps" required></textarea>
+
+      <label for="image">Recipe Image</label>
+      <input type="file" id="image" name="image" accept="image/*" required />
+
+      <button type="submit" class="submit-btn">➕ Add Recipe</button>
+    </form>
+  </div>
+
+  <!-- === Hamburger Script === -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const hamburger = document.querySelector(".hamburger");
+      const navLinks = document.getElementById("nav-links");
+
+      if (hamburger && navLinks) {
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("show");
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

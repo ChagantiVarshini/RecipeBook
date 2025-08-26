@@ -1,0 +1,139 @@
+/* General body styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    height: 100vh;
+}
+
+/* Dark overlay for readability */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* dark overlay */
+    z-index: -1;
+}
+
+/* Header styling */
+header {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Center content */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    background: #574fd6;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background: #1e2636;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+/* === Responsive adjustments === */
+
+/* Small devices (phones, max-width 600px) */
+@media (max-width: 600px) {
+    header {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    main {
+        height: auto; /* allow content to expand */
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin: 8px;
+    }
+}
+
+/* Medium devices (tablets, max-width 900px) */
+@media (max-width: 900px) {
+    header {
+        font-size: 22px;
+        padding: 18px;
+    }
+
+    main {
+        height: auto;
+        padding: 25px;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+
+    p {
+        font-size: 17px;
+        margin-bottom: 25px;
+    }
+
+    .btn {
+        padding: 11px 22px;
+        font-size: 15px;
+        margin: 9px;
+    }
+}
+
+/* Ensure overlay and body height adapt */
+body::before {
+    @media (max-width: 900px) {
+        height: 100%; /* keep full screen on smaller devices */
+    }
+}

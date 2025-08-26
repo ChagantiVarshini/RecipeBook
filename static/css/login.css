@@ -1,0 +1,151 @@
+/* Background styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') no-repeat center center/cover;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Dark overlay for readability */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: -1;
+}
+
+/* Header & Footer */
+header, footer {
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 15px;
+    font-size: 22px;
+}
+
+/* Form Styling */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+form {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 30px 40px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+form h2 {
+    margin-bottom: 20px;
+    color: #ffcc70;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+    color: #ddd;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ff7e5f;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ffcc70;
+    color: #000;
+}
+
+/* Flash Messages */
+.flash-container {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.flash {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flash.success { background: rgba(76, 175, 80, 0.9); color: #fff; }
+.flash.error { background: rgba(244, 67, 54, 0.9); color: #fff; }
+
+/* Register link */
+.register-link {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #ddd;
+}
+
+.register-link a {
+    color: #57a6ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    form {
+        padding: 25px 30px;
+    }
+    header, footer {
+        font-size: 20px;
+    }
+    button {
+        font-size: 15px;
+        padding: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 20px;
+    }
+    header, footer {
+        font-size: 18px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+    label, .register-link {
+        font-size: 14px;
+    }
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

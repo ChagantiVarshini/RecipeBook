@@ -1,0 +1,148 @@
+/* Background setup */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: white;
+}
+
+/* Dark overlay */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: -1;
+}
+
+/* Header */
+header {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* Main container */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form box */
+form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px 50px 30px 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px); /* Frosted glass effect */
+}
+
+/* Form headings */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+}
+
+/* Button */
+button {
+    width: 105%;
+    padding: 12px;
+    background: #574fd6;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #1e2636;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+/* Flash messages */
+.flash-container {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.flash {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.flash.success {
+    background: rgba(46, 204, 113, 0.9); /* Green */
+    color: white;
+}
+
+.flash.error {
+    background: rgba(231, 76, 60, 0.9); /* Red */
+    color: white;
+}
+/* Login link */
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.95rem;
+}
+.login-link a {
+    color: #00cfff;
+    text-decoration: none;
+}
+.login-link a:hover {
+    text-decoration: underline;
+}
+/* Responsive */
+@media (max-width: 480px) {
+    .form-container {
+        margin: 0 15px;
+        padding: 20px;
+    }
+}
