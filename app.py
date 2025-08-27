@@ -15,7 +15,7 @@ app.secret_key = "supersecretkey"
 load_dotenv()  # loads .env file
 
 try:
-    db = mysql.connector.connect(
+    mydb = mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
