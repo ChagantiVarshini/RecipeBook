@@ -1,49 +1,26 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, session
 import mysql.connector
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
-from urllib.parse import urlparse
+import os, mysql.connector
 
-# Load .env locally
-load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "supersecretkey")
-
-# Upload config
-app.config['UPLOAD_FOLDER'] = 'static/uploads/recipes'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-# --- MySQL Connection ---
-db_url = os.environ.get("MYSQL_URL")  # Railway provides this
-if db_url:
-    url = urlparse(db_url)
-    mydb = mysql.connector.connect(
-        host=url.hostname,
-        port=url.port,
-        user=url.username,
-        password=url.password,
-        database=url.path[1:]  # remove leading '/'
-    )
-else:
-    # Local development fallback
-    mydb = mysql.connector.connect(
-        host=os.environ.get("DB_HOST"),
-        port=int(os.environ.get("DB_PORT", 3306)),
-        user=os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME")
-    )
-
-if not mydb.is_connected():
-    mydb.reconnect()
+app.secret_key = "supersecretkey"
 
 
 
+load_dotenv()  # loads .env file
 
+mydb = mysql.connector.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME"),
+    port=os.getenv("DB_PORT")
+)
 
 
 
